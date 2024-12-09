@@ -7,8 +7,13 @@ class testFraction(unittest.TestCase):
         """Vérifie si les args sont valides dans l'initialisation d'une
         fraction"""
         f = Fraction(1, 2)
+        f2 = Fraction(1, -1)
         self.assertEqual(f.numerator, 1, "num incorrect")
         self.assertEqual(f.denominator, 2, "den incorrect")
+
+        # tester si le denominatur devient bien positif
+        self.assertEqual(f2.numerator, -1, "num incorrect")
+        self.assertEqual(f2.denominator, 1, "den incorrect")
 
     def test_Init_raises(self):
         """Vérifie le type des arguments"""
@@ -40,6 +45,23 @@ class testFraction(unittest.TestCase):
             str(Fraction(-2, -2)), "1", "représentation réduire non correcte"
         )
 
+        self.assertEqual(
+            str(Fraction(0, 1)), "0", "représentation réduire non correcte"
+        )
+
+        self.assertEqual(
+            str(Fraction(1, -1)), "-1", "représentation réduire non correcte"
+        )
+        self.assertEqual(
+            str(Fraction(-1, -1)), "1", "représentation réduire non correcte"
+        )
+        self.assertEqual(
+            str(Fraction(-2, 1)), "-2", "représentation réduire non correcte"
+        )
+        self.assertEqual(
+            str(Fraction(1, 1)), "1", "représentation réduire non correcte"
+        )
+
     def test_as_mixed_number(self):
         """Vérification de la représentation en entier et reste"""
         self.assertEqual(
@@ -60,6 +82,27 @@ class testFraction(unittest.TestCase):
         self.assertEqual(
             Fraction(-30, 40).as_mixed_number(),
             "-3/4",
+            "représentation de l'entier et du reste incorrecte",
+        )
+
+        self.assertEqual(
+            Fraction(1, 3).as_mixed_number(),
+            "1/3",
+            "représentation de l'entier et du reste incorrecte",
+        )
+        self.assertEqual(
+            Fraction(-1, 3).as_mixed_number(),
+            "-1/3",
+            "représentation de l'entier et du reste incorrecte",
+        )
+        self.assertEqual(
+            Fraction(0, 1).as_mixed_number(),
+            "0",
+            "représentation de l'entier et du reste incorrecte",
+        )
+        self.assertEqual(
+            Fraction(1, 1).as_mixed_number(),
+            "1",
             "représentation de l'entier et du reste incorrecte",
         )
 
@@ -84,6 +127,26 @@ class testFraction(unittest.TestCase):
         f2 = Fraction(-1, 3)
         self.assertEqual(f1 + f2, Fraction(-5, 6),
                          "Somme incorrecte avec -1/2 et -1/3")
+
+        f1 = Fraction(1, 1)
+        f2 = Fraction(-1, 1)
+        self.assertEqual(f1 + f2, Fraction(0, 1),
+                         "Somme incorrecte avec 1 et -1")
+
+        f1 = Fraction(1, 1)
+        f2 = Fraction(1, 1)
+        self.assertEqual(f1 + f2, Fraction(2, 1),
+                         "Somme incorrecte avec 1 et 1")
+
+        f1 = Fraction(-1, 1)
+        f2 = Fraction(0, 1)
+        self.assertEqual(f1 + f2, Fraction(-1, 1),
+                         "Somme incorrecte avec -1 et 0")
+
+        f1 = Fraction(0, 1)
+        f2 = Fraction(0, 1)
+        self.assertEqual(f1 + f2, Fraction(0, 1),
+                         "Somme incorrecte avec 0 et 0")
 
     def test_sub(self):
         """Vérification du moins"""
@@ -110,6 +173,26 @@ class testFraction(unittest.TestCase):
             f1 - f2, Fraction(-1, 6), "Différence incorrecte avec -1/2 et -1/3"
         )
 
+        f1 = Fraction(1, 1)
+        f2 = Fraction(0, 1)
+        self.assertEqual(f1 - f2, Fraction(1, 1),
+                         "Différence incorrecte avec 1 et 0")
+
+        f1 = Fraction(0, 1)
+        f2 = Fraction(-1, 1)
+        self.assertEqual(f1 - f2, Fraction(1, 1),
+                         "Différence incorrecte avec 0 et -1")
+
+        f1 = Fraction(-1, 1)
+        f2 = Fraction(1, 1)
+        self.assertEqual(f1 - f2, Fraction(-2, 1),
+                         "Différence incorrecte avec -1 et 1")
+
+        f1 = Fraction(0, 1)
+        f2 = Fraction(0, 1)
+        self.assertEqual(f1 - f2, Fraction(0, 1),
+                         "Différence incorrecte avec 0 et 0")
+
     def test_mul(self):
         """Vérification de la multiplication"""
         f1 = Fraction(2, 3)
@@ -132,6 +215,26 @@ class testFraction(unittest.TestCase):
         f2 = Fraction(-3, 4)
         self.assertEqual(f1 * f2, Fraction(1, 2),
                          "Produit incorrect avec -2/3 et -3/4")
+
+        f1 = Fraction(1, 1)
+        f2 = Fraction(0, 1)
+        self.assertEqual(f1 * f2, Fraction(0, 1),
+                         "Produit incorrect avec 1 et 0")
+
+        f1 = Fraction(0, 1)
+        f2 = Fraction(-1, 1)
+        self.assertEqual(f1 * f2, Fraction(0, 1),
+                         "Produit incorrect avec 0 et -1")
+
+        f1 = Fraction(-1, 1)
+        f2 = Fraction(1, 1)
+        self.assertEqual(f1 * f2, Fraction(-1, 1),
+                         "Produit incorrect avec -1 et 1")
+
+        f1 = Fraction(0, 1)
+        f2 = Fraction(0, 1)
+        self.assertEqual(f1 * f2, Fraction(0, 1),
+                         "Produit incorrect avec 0 et 0")
 
     def test_division(self):
         """Vérification de la divisioin"""
@@ -162,6 +265,14 @@ class testFraction(unittest.TestCase):
         """Vérification de l'exception ZeroDivisionError"""
         with self.assertRaises(ZeroDivisionError):
             Fraction(1, 2) / Fraction(0, 1)
+        with self.assertRaises(ZeroDivisionError):
+            Fraction(1, 1) / Fraction(0, 10)
+
+        with self.assertRaises(ZeroDivisionError):
+            Fraction(-1, 1) / Fraction(0, 58)
+
+        with self.assertRaises(ZeroDivisionError):
+            Fraction(0, 1) / Fraction(0, 4)
 
     def test_puissance(self):
         """Vérification de la puissance sur les fractions"""
@@ -178,6 +289,22 @@ class testFraction(unittest.TestCase):
                          "Puissance incorrecte avec -1/3"
                          )
 
+        f = Fraction(1, 2)
+        self.assertEqual(f**3, Fraction(1, 8),
+                         "Puissance incorrecte avec 1/2^3")
+
+        f = Fraction(-1, 2)
+        self.assertEqual(f**3, Fraction(-1, 8),
+                         "Puissance incorrecte avec -1/2^3")
+
+        f = Fraction(0, 1)
+        self.assertEqual(f**5, Fraction(0, 1),
+                         "Puissance incorrecte avec 0^5")
+
+        f = Fraction(-1, 1)
+        self.assertEqual(f**4, Fraction(1, 1),
+                         "Puissance incorrecte avec -1^4")
+
     def test_equal(self):
         """Vérification de l'equal"""
         self.assertTrue(Fraction(2, 3) == Fraction(4, 6), "Égalité incorrecte")
@@ -185,7 +312,6 @@ class testFraction(unittest.TestCase):
                          "Égalité incorrecte"
                          )
 
-        # Cas avec des fractions négatives
         self.assertTrue(
             Fraction(-2, 3) == Fraction(4, -6),
             "Égalité incorrecte avec -2/3 et 4/-6"
@@ -194,12 +320,29 @@ class testFraction(unittest.TestCase):
             Fraction(-2, 3) == Fraction(3, 4),
             "Égalité incorrecte avec -2/3 et 3/4"
         )
+        self.assertTrue(Fraction(0, 1) == Fraction(0, 1),
+                        "Égalité incorrecte avec 0 et 0")
+        self.assertFalse(Fraction(1, 1) == Fraction(-1, 1),
+                         "Égalité incorrecte avec 1 et -1")
+        self.assertTrue(Fraction(1, 1) == Fraction(2, 2),
+                        "Égalité incorrecte avec 1 et 2/2")
+        self.assertFalse(Fraction(0, 1) == Fraction(1, 1),
+                         "Égalité incorrecte avec 0 et 1")
 
     def test_float(self):
         """vérifie si le float retourné est correct"""
         self.assertEqual(float(Fraction(1, 2)), 0.5,
                          "le float n'est pas correct"
                          )
+
+        self.assertEqual(float(Fraction(0, 1)), 0.0,
+                         "Float incorrect avec 0")
+        self.assertEqual(float(Fraction(1, 1)), 1.0,
+                         "Float incorrect avec 1")
+        self.assertEqual(float(Fraction(-1, 1)), -1.0,
+                         "Float incorrect avec -1")
+        self.assertEqual(float(Fraction(1, 2)), 0.5,
+                         "Float incorrect avec 1/2")
 
         # Cas avec des fractions négatives
         self.assertEqual(
@@ -226,12 +369,20 @@ class testFraction(unittest.TestCase):
                         "détection d'entier incorrecte")
         self.assertFalse(Fraction(3, 4).is_integer(),
                          "détection d'entier incorrecte")
+        self.assertTrue(Fraction(0, 1).is_integer(),
+                        "Détection incorrecte avec 0/1")
+        self.assertFalse(Fraction(1, 3).is_integer(),
+                         "Détection incorrecte avec 1/3")
+        self.assertFalse(Fraction(2, 3).is_integer(),
+                         "Détection incorrecte avec 2/3")
 
         # Cas avec des fractions négatives
         self.assertTrue(
             Fraction(-2, 1).is_integer(),
             "détection d'entier incorrecte avec -2/1"
         )
+        self.assertTrue(Fraction(-1, 1).is_integer(),
+                        "Détection incorrecte avec -1/1")
 
     def test_is_proper(self):
         """Vérification de la méthode is_proper"""
@@ -243,16 +394,24 @@ class testFraction(unittest.TestCase):
             Fraction(4, 2).is_proper(),
             "Détection de fraction propre incorrecte"
         )
+        self.assertTrue(Fraction(1, 2).is_proper(),
+                        "Détection incorrecte avec 1/2")
+        self.assertFalse(Fraction(1, 1).is_proper(),
+                         "Détection incorrecte avec 1/1")
 
         # Cas avec des fractions négatives
         self.assertTrue(
             Fraction(-3, 4).is_proper(),
             "Détection de fraction propre incorrecte avec -3/4",
         )
+        self.assertFalse(Fraction(-2, 1).is_proper(),
+                         "Détection incorrecte avec -2/1")
         self.assertFalse(
             Fraction(-4, 2).is_proper(),
             "Détection de fraction propre incorrecte avec -4/2",
         )
+        self.assertTrue(Fraction(-1, 2).is_proper(),
+                        "Détection incorrecte avec -1/2")
 
     def test_is_unit(self):
         """Vérification de la méthode is_unit"""
@@ -289,6 +448,20 @@ class testFraction(unittest.TestCase):
             f4.is_adjacent_to(Fraction(-3, 4)),
             "Détection d'adjacence incorrecte"
         )
+
+        f1 = Fraction(0, 1)
+        f2 = Fraction(1, 1)
+        f3 = Fraction(-1, 1)
+        f4 = Fraction(1, 2)
+
+        self.assertTrue(f1.is_adjacent_to(f4),
+                        "Détection d'adjacence incorrecte avec 0 et 1/2")
+        self.assertTrue(f3.is_adjacent_to(Fraction(-2, 1)),
+                        "Détection d'adjacence incorrecte avec -1 et -2")
+        self.assertTrue(f2.is_adjacent_to(Fraction(2, 3)),
+                        "Détection d'adjacence incorrecte avec 1 et 2/3")
+        self.assertTrue(Fraction(-1, 3).is_adjacent_to(f1),
+                        "Détection d'adjacence incorrecte avec -1/3 et 0")
 
 
 if __name__ == "__main__":

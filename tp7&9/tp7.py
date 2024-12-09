@@ -13,7 +13,7 @@ class Fraction:
         """This builds a fraction based on some numerator and denominator.
 
         PRE :
-            * num et den sont des entiers
+            * none
         POST :
             *un objet Fraction simplifié au maximum est créé
         RAISE :
@@ -80,6 +80,8 @@ class Fraction:
             * si le num < den, le résultat correspond à une fraction
             équivalente (numérateur / dénominateur) sous forme réduite
         """
+        if self.denominator == 1:
+            return str(self.numerator)
         if abs(self.numerator) > abs(self.denominator):
             entier = self.numerator // self.denominator
             reste = abs(self.numerator % self.denominator)
@@ -98,7 +100,7 @@ class Fraction:
         """Overloading of the + operator for fractions
 
          PRE :
-            * other doit etre une instance de Fraction
+            * none
          POST :
             * la sortie est une nouvelle fraction qui est équivalente à la
             somme de self et other
@@ -119,7 +121,7 @@ class Fraction:
         """Overloading of the - operator for fractions
 
          PRE :
-            * other doit etre une instance de Fraction
+            * none
          POST :
             * retourne une nouvelle fraction qui est équivalente à la
             différence
@@ -135,7 +137,7 @@ class Fraction:
         """Overloading of the * operator for fractions
 
         PRE :
-            * other doit etre une instance de Fraction
+            * none
         POST :
             * retourne la multiplication des deux fractions, toujours sous
             forme de fraction
@@ -153,7 +155,7 @@ class Fraction:
         """Overloading of the / operator for fractions
 
         PRE :
-            * other doit etre une instance de Fraction
+            * none
         POST :
             * retourne une nouvelle fraction qui est le quotient des paramètres
          RAISE :
@@ -171,7 +173,7 @@ class Fraction:
         """Overloading of the ** operator for fractions
 
         PRE :
-            *other doit etre un entier
+            * none
         POST :
             * élève le num et le den à une puissance et retourne cette
             nouvelle fraction
@@ -186,7 +188,7 @@ class Fraction:
     def __eq__(self, other):
         """Overloading of the == operator for fractions
         PRE :
-            * other doit etre une instance de la classe fraction
+            * none
         POST :
             * retourne true si les fractions sont équivalentes, sinon
             renvoie false
@@ -259,7 +261,7 @@ class Fraction:
         them is a unit fraction
 
         PRE :
-            * other doit etre une instance de Fraction
+            * none
         POST :
             * Retourne True si la différence est de la forme ±1/d, False sinon
             (si c'est une fraction unitaire)
