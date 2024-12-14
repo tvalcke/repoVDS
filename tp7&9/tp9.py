@@ -203,7 +203,7 @@ class testFraction(unittest.TestCase):
         f1 = Fraction(-2, 3)
         f2 = Fraction(3, 4)
         self.assertEqual(f1 * f2, Fraction(-1, 2),
-                         "Produit incorrect avec -2/3 et 3/4"
+                         "Produit incorrect avec -2/3 et 3/4 "
                          )
 
         f1 = Fraction(2, 3)
