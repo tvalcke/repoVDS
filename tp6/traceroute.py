@@ -1,7 +1,4 @@
-"""
-Valcke tristan - Écrit en partie avec MistralAI
-conforme à la PEP8, formaté avec black et vérifié avec flake8
-"""
+import argparse
 import subprocess
 
 
@@ -42,36 +39,27 @@ def run_traceroute(target, progressive=False, output_file=None):
 
 
 def main():
-    # Demander à l'utilisateur l'URL ou l'adresse IP
-    target = input("Veuillez entrer l'URL ou l'adresse IP cible : ")
-
-    # Demander à l'utilisateur s'il veut l'affichage progressif
-    progressive_input = (
-        input("Souhaitez-vous afficher les"
-              " résultats au fur et à mesure ? (oui/non) : ")
-        .strip()
-        .lower()
+    parser = argparse.ArgumentParser(description="Exécute un tracert "
+                                     "vers une cible spécifiée.")
+    parser.add_argument("target", help="URL ou adresse IP "
+                        "cible pour le tracert")
+    parser.add_argument(
+        "-p", "--progressive", action="store_true",
+        help="Afficher les résultats au fur et à mesure"
     )
-    progressive = progressive_input == "oui"
-
-    # Demander à l'utilisateur s'il veut
-    # enregistrer les résultats dans un fichier
-    output_file = (
-        input("Souhaitez-vous enregistrer les "
-              "résultats dans un fichier ? (oui/non) : ")
-        .strip()
-        .lower()
+    parser.add_argument(
+        "-o", "--output", metavar="output_file",
+        help="Fichier où enregistrer les résultats du tracert"
     )
-    if output_file == "oui":
-        output_file = input(
-            "Veuillez entrer le nom du "
-            "fichier de sortie (ex: traceroute.txt) : "
-        )
-    else:
-        output_file = None
 
-    # Appeler la fonction de traceroute avec les paramètres
-    run_traceroute(target, progressive=progressive, output_file=output_file)
+    args = parser.parse_args()
+
+    # Appeler la fonction de traceroute avec les arguments
+    run_traceroute(
+        target=args.target,
+        progressive=args.progressive,
+        output_file=args.output
+    )
 
 
 if __name__ == "__main__":
