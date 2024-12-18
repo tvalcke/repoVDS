@@ -1,6 +1,4 @@
 
-D‚termination de l'itin‚raire vers google.com [142.250.179.206]
+D‚termination de l'itin‚raire vers google.com [142.251.39.110]
 avec un maximum de 30 sautsÿ:
 
-  1     6 ms     6 ms     6 ms  192.168.0.1 
-  2     3 ms     2 ms     2 ms  mymodem [192.168.1.1] 

@@ -1,5 +1,6 @@
 import argparse
 import subprocess
+import re
 
 
 def run_traceroute(target, progressive=False, output_file=None):
@@ -15,9 +16,13 @@ def run_traceroute(target, progressive=False, output_file=None):
                     stderr=subprocess.PIPE, text=True
                 )
                 for line in process.stdout:
-                    if progressive:
-                        print(line.strip())  # Afficher au fur et à mesure
-                    f.write(line)  # Écrire dans le fichier
+                    # Extraire les adresses IP
+                    match = re.search(r"\d+\.\d+\.\d+\.\d+", line)
+                    if match:
+                        ip = match.group()
+                        if progressive:
+                            print(ip)  # Afficher chaque IP au fur et à mesure
+                        f.write(ip + "\n")  # Écrire chaque IP dans le fichier
                 process.communicate()
         else:
             process = subprocess.Popen(
@@ -25,8 +30,12 @@ def run_traceroute(target, progressive=False, output_file=None):
                 stderr=subprocess.PIPE, text=True
             )
             for line in process.stdout:
-                if progressive:
-                    print(line.strip())  # Afficher au fur et à mesure
+                # Extraire les adresses IP
+                match = re.search(r"\d+\.\d+\.\d+\.\d+", line)
+                if match:
+                    ip = match.group()
+                    if progressive:
+                        print(ip)  # Afficher chaque IP au fur et à mesure
             if not progressive:
                 process.communicate()
 
@@ -35,14 +44,14 @@ def run_traceroute(target, progressive=False, output_file=None):
     except Exception as e:
         print(
             f"Une erreur s'est produite lors de l'exécution de tracert : {e}"
-            )
+        )
 
 
 def main():
     parser = argparse.ArgumentParser(description="Exécute un tracert "
-                                     "vers une cible spécifiée.")
-    parser.add_argument("target", help="URL ou adresse IP "
-                        "cible pour le tracert")
+                                     "vers une cible spécifiée et "
+                                     "n'affiche que les adresses IP.")
+    parser.add_argument("target", help="URL ou adresse IP cible pour le tracert")
     parser.add_argument(
         "-p", "--progressive", action="store_true",
         help="Afficher les résultats au fur et à mesure"
